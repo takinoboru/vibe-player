@@ -7,13 +7,11 @@ let startTime = 0;
 let pauseOffset = 0;
 let animationFrame = null;
 
-let selectedPreset = "letitgo";
+let useDefault = false;
 
-const presetSelect = document.getElementById("presetSelect");
 const audioInput = document.getElementById("audioFile");
 const csvInput = document.getElementById("csvFile");
-const uploadSection = document.getElementById("uploadSection");
-
+const loadDefaultButton = document.getElementById("loadDefaultButton");
 const startButton = document.getElementById("startButton");
 const pauseButton = document.getElementById("pauseButton");
 const resumeButton = document.getElementById("resumeButton");
@@ -27,9 +25,11 @@ pauseButton.style.display = "none";
 resumeButton.style.display = "none";
 progressBar.style.display = "none";
 
-presetSelect.addEventListener("change", () => {
-  selectedPreset = presetSelect.value;
-  uploadSection.style.display = selectedPreset === "custom" ? "block" : "none";
+// === 加载 Let It Go 文件按钮逻辑 ===
+loadDefaultButton.addEventListener("click", async () => {
+  useDefault = true;
+  await loadAudioAndCSV();
+  alert("默认文件 Let It Go 加载完成！");
 });
 
 startButton.addEventListener("click", async () => {
@@ -83,24 +83,25 @@ progressBar.addEventListener("input", () => {
 });
 
 async function loadAudioAndCSV() {
-  const fetchBinary = async (url) => await fetch(url).then(r => r.arrayBuffer());
-  const fetchText = async (url) => await fetch(url).then(r => r.text());
-
-  let audioBuf, csvText;
-
-  if (selectedPreset === "letitgo") {
-    audioBuf = await fetchBinary("let_it_go.wav");
-    csvText = await fetchText("let_it_go_1.csv");
-  } else if (selectedPreset === "demo2") {
-    audioBuf = await fetchBinary("another_demo.wav");
-    csvText = await fetchText("another_demo.csv");
+  // 音频加载逻辑
+  if (useDefault || audioInput.files.length === 0) {
+    const arrayBuffer = await fetch("let_it_go.wav").then(r => r.arrayBuffer());
+    audioBuffer = await (audioCtx || new AudioContext()).decodeAudioData(arrayBuffer);
   } else {
-    audioBuf = await audioInput.files[0].arrayBuffer();
-    csvText = await csvInput.files[0].text();
+    const arrayBuffer = await audioInput.files[0].arrayBuffer();
+    audioBuffer = await (audioCtx || new AudioContext()).decodeAudioData(arrayBuffer);
   }
 
-  audioBuffer = await audioCtx.decodeAudioData(audioBuf);
-  parseCSVText(csvText);
+  // CSV 加载逻辑
+  if (useDefault || csvInput.files.length === 0) {
+    const text = await fetch("let_it_go_1.csv").then(r => r.text());
+    parseCSVText(text);
+  } else {
+    const text = await csvInput.files[0].text();
+    parseCSVText(text);
+  }
+
+  useDefault = false; // 播放完后恢复
 }
 
 function parseCSVText(text) {
