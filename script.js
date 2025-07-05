@@ -30,6 +30,8 @@ loadDefaultButton.addEventListener("click", async () => {
   useDefault = true;
   await loadAudioAndCSV();
   alert("默认文件 Let It Go 加载完成！");
+  const video = document.getElementById('boyVideo');
+  video.style.display = 'block';
 });
 
 startButton.addEventListener("click", async () => {
