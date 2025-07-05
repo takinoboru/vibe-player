@@ -2,7 +2,6 @@ let audioBuffer = null;
 let csvData = [];
 let audioCtx = null;
 let source = null;
-
 let startTime = 0;
 let pauseOffset = 0;
 let animationFrame = null;
