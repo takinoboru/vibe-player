@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>音频播放器 - 振动同步实验工具</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>音频播放器</h1>
+
+  <div>
+    <label for="audioFile">音频文件 (.wav)：</label><br />
+    <input type="file" id="audioFile" accept="audio/wav" /><br /><br />
+
+    <label for="csvFile">CSV 文件 (.csv)：</label><br />
+    <input type="file" id="csvFile" accept=".csv" /><br /><br />
+
+    <button id="startButton">播放</button>
+  </div>
+
+  <p style="margin-top:2em; font-size:0.9em; color:gray;">
+    请使用 Android 浏览器打开本页面以启用震动功能。部分浏览器（如 iOS Safari）不支持 Vibration API。
+  </p>
+
+  <script src="script.js"></script>
+</body>
+</html>
