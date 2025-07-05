@@ -7,32 +7,38 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>听之有形</h1>
+  <!-- 替换为 SVG 标题 -->
+  <div class="logo-container">
+    <!-- 请将 SoundSight.svg 文件内容粘贴到此处，或使用 <img src="SoundSight.svg" alt="SoundSight" class="logo-svg" /> -->
+    <img src="SoundSight.svg" alt="SoundSight" class="logo-svg" />
+  </div>
 
-  <!-- 视频元素移动到此处 -->
   <video id="boyVideo" width="270" height="480" style="display:none;" controls>
     <source src="boy.mp4" type="video/mp4">
     您的浏览器不支持 video 标签。
   </video>
 
-  <div>
-    <label for="audioFile">音频文件 (.wav)：</label><br />
-    <input type="file" id="audioFile" accept="audio/wav" /><br /><br />
-
-    <label for="csvFile">CSV 文件 (.csv)：</label><br />
-    <input type="file" id="csvFile" accept=".csv" /><br /><br />
-
-    <button id="loadDefaultButton">使用 Let It Go</button>
-    <button id="startButton">播放</button>
-    <button id="pauseButton">暂停</button>
-    <button id="resumeButton">继续</button><br /><br />
-
-    <input type="range" id="progress" value="0" min="0" max="100" step="1" /><br /><br />
-
+  <div class="main-form">
+    <div class="file-group-row">
+      <div class="file-group">
+        <label for="audioFile">音频文件 (.wav)：</label>
+        <input type="file" id="audioFile" accept="audio/wav" />
+      </div>
+      <div class="file-group">
+        <label for="csvFile">CSV 文件 (.csv)：</label>
+        <input type="file" id="csvFile" accept=".csv" />
+      </div>
+    </div>
+    <div class="button-group">
+      <button id="loadDefaultButton">使用 Let It Go</button>
+      <button id="startButton">播放</button>
+      <button id="pauseButton">暂停</button>
+      <button id="resumeButton">继续</button>
+    </div>
+    <input type="range" id="progress" value="0" min="0" max="100" step="1" />
     <div class="canvas-container">
       <canvas id="vibeCanvas" width="400" height="80"></canvas>
     </div>
-    
   </div>
   <script src="script.js"></script>
 </body>

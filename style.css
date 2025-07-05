@@ -1,9 +1,37 @@
 body {
-  font-family: "Segoe UI", sans-serif;
-  text-align: center;
-  padding: 40px;
-  background: #fff8f0;
-  color: #444;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 18px;
+}
+
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+.logo-svg {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.main-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1em;
 }
 
 h1 {
@@ -69,23 +97,71 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .canvas-container {
-  width: 400px;
-  height: 713px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 400px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
+  margin: 0 auto;
+  font-size: 1em;
 }
 
 #vibeCanvas {
   display: block;
-  margin: 0 auto;
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  max-width: 400px;
+  height: 80px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.file-group-row {
+  display: flex;
+  gap: 24px;
+  justify-content: flex-start; /* 改为左对齐 */
+  width: 100%;
+  margin-bottom: 18px;
+  padding-left: 12px; /* 向右整体移动，数值可根据实际视觉效果调整 */
+}
+
+.file-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-group label {
+  white-space: nowrap;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+  margin-top: 8px;
+  font-size: 1em;
+}
+
+#progress {
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 18px;
+  margin-top: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+video#boyVideo {
+  display: block;
+  margin: 0 auto 18px auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 420px) {
@@ -97,5 +173,37 @@ input[type="range"]::-webkit-slider-thumb {
   #vibeCanvas {
     width: 100%;
     max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 4vw;
+  }
+  .main-form, .file-group-row, .button-group, .canvas-container {
+    max-width: 100vw;
+    width: 100vw;
+    padding: 0 8px;
+    font-size: 1em;
+  }
+  .file-group-row {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    padding-left: 48px; /* 移动端适当减少偏移 */
+  }
+  #vibeCanvas {
+    max-width: 100vw;
+    width: 100%;
+  }
+  .logo-svg {
+    max-width: 80vw;
+    height: auto;
+  }
+}
+
+@media (max-width: 400px) {
+  body {
+    font-size: 3.5vw;
   }
 }
