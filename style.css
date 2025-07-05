@@ -68,10 +68,34 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
 }
 
+.canvas-container {
+  width: 400px;
+  height: 713px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 #vibeCanvas {
   display: block;
   margin: 0 auto;
-  border: 1px solid #ddd;
-  background: #fffdf9;
+  max-width: 100%;
+  height: auto;
+  background: #fff;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 420px) {
+  .canvas-container {
+    width: 100vw;
+    max-width: 100vw;
+    padding: 0 8px;
+  }
+  #vibeCanvas {
+    width: 100%;
+    max-width: 100%;
+  }
 }
