@@ -26,10 +26,16 @@ resumeButton.style.display = "none";
 progressBar.style.display = "none";
 
 // === 加载 Let It Go 文件按钮逻辑 ===
+const boyVideo = document.getElementById("boyVideo");
+
 loadDefaultButton.addEventListener("click", async () => {
   useDefault = true;
   await loadAudioAndCSV();
   alert("默认文件 Let It Go 加载完成！");
+  // 显示视频
+  if (boyVideo) {
+    boyVideo.style.display = "block";
+  }
 });
 
 startButton.addEventListener("click", async () => {
