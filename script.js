@@ -12,7 +12,7 @@ let useDefault = false;
 const audioInput = document.getElementById("audioFile");
 const csvInput = document.getElementById("csvFile");
 const loadDefaultButton = document.getElementById("loadDefaultButton");
-const startButton = document.getElementById('startButton');
+const startButton = document.getElementById("startButton");
 const pauseButton = document.getElementById("pauseButton");
 const resumeButton = document.getElementById("resumeButton");
 const progressBar = document.getElementById("progress");
@@ -32,8 +32,22 @@ loadDefaultButton.addEventListener("click", async () => {
   alert("默认文件 Let It Go 加载完成！");
 });
 
-startButton.addEventListener('click', function() {
-  playAudio(0);
+startButton.addEventListener("click", async () => {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  if (source) {
+    source.stop();
+    cancelAnimationFrame(animationFrame);
+  }
+
+  pauseOffset = 0;
+  vibrationHistory = [];
+  drawVibeTimeline();
+
+  await loadAudioAndCSV();
+  playAudio();
 });
 
 pauseButton.addEventListener("click", () => {
@@ -122,7 +136,6 @@ function energyToVibrationDuration(energy) {
 }
 
 function playAudio(offset = 0) {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   source = audioCtx.createBufferSource();
   source.buffer = audioBuffer;
   source.connect(audioCtx.destination);
@@ -173,9 +186,9 @@ function drawVibeTimeline() {
   vibeCtx.clearRect(0, 0, width, height);
 
   vibrationHistory.forEach((dur, i) => {
-    let color = "#ffd2b3";
-    if (dur > 70) color = "#ff6800";
-    else if (dur > 40) color = "#ffb582";
+    let color = "#ffeb3b";
+    if (dur > 70) color = "#f44336";
+    else if (dur > 40) color = "#ff9800";
 
     const barHeight = (dur / 100) * height;
     vibeCtx.fillStyle = color;
