@@ -12,7 +12,7 @@ let useDefault = false;
 const audioInput = document.getElementById("audioFile");
 const csvInput = document.getElementById("csvFile");
 const loadDefaultButton = document.getElementById("loadDefaultButton");
-const startButton = document.getElementById('startButton');
+const startButton = document.getElementById("startButton");
 const pauseButton = document.getElementById("pauseButton");
 const resumeButton = document.getElementById("resumeButton");
 const progressBar = document.getElementById("progress");
@@ -30,44 +30,24 @@ loadDefaultButton.addEventListener("click", async () => {
   useDefault = true;
   await loadAudioAndCSV();
   alert("默认文件 Let It Go 加载完成！");
-  const video = document.getElementById('boyVideo');
-  video.style.display = 'block';
 });
 
-startButton.addEventListener('click', function() {
-  // 显示并重置视频
-  boyVideo.style.display = 'block';
-  boyVideo.currentTime = 0;
-  boyVideo.muted = true;
-  boyVideo.play();
-
-  // 播放音频和振动
-  playAudio(0);
-
-  // 保证视频和音频同步
-  if (audioBuffer) {
-    boyVideo.playbackRate = 1;
-    boyVideo.pause();
-    boyVideo.currentTime = 0;
-    boyVideo.muted = true;
-    boyVideo.play();
-
-    // 同步进度
-    const syncInterval = setInterval(() => {
-      if (boyVideo.paused || boyVideo.ended) {
-        clearInterval(syncInterval);
-        return;
-      }
-      // 让视频进度跟随音频
-      const audioCurrent = audioCtx.currentTime - startTime;
-      if (Math.abs(boyVideo.currentTime - audioCurrent) > 0.1) {
-        boyVideo.currentTime = audioCurrent;
-      }
-    }, 100);
-
-    // 停止时清理
-    boyVideo.onended = () => clearInterval(syncInterval);
+startButton.addEventListener("click", async () => {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
+
+  if (source) {
+    source.stop();
+    cancelAnimationFrame(animationFrame);
+  }
+
+  pauseOffset = 0;
+  vibrationHistory = [];
+  drawVibeTimeline();
+
+  await loadAudioAndCSV();
+  playAudio();
 });
 
 pauseButton.addEventListener("click", () => {
