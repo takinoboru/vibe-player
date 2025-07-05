@@ -12,8 +12,8 @@
   <div>
     <label for="presetSelect">选择预设或自定义文件：</label><br />
     <select id="presetSelect">
-      <option value="letitgo">🎵🎵 Let It Go</option>
-      <option value="custom">🧾🧾 自定义上传</option>
+      <option value="letitgo">🎵 Let It Go</option>
+      <option value="custom">🧾 自定义上传</option>
     </select><br /><br />
 
     <div id="uploadSection" style="display: none;">
@@ -22,14 +22,6 @@
 
       <label for="csvFile">CSV 文件 (.csv)：</label><br />
       <input type="file" id="csvFile" accept=".csv" /><br /><br />
-    </div>
-
-    <!-- 添加的视频容器 -->
-    <div id="videoContainer" style="display: none; margin: 20px auto; max-width: 300px;">
-      <video id="bgVideo" width="100%" muted playsinline>
-        <source src="boy.mp4" type="video/mp4">
-        您的浏览器不支持视频标签。
-      </video>
     </div>
 
     <button id="startButton">播放</button>
@@ -47,4 +39,4 @@
 
   <script src="script.js"></script>
 </body>
-</html> 
+</html>

@@ -23,10 +23,6 @@ const vibeCanvas = document.getElementById("vibeCanvas");
 const vibeCtx = vibeCanvas.getContext("2d");
 let vibrationHistory = [];
 
-// 新增视频元素引用
-const videoContainer = document.getElementById("videoContainer");
-const bgVideo = document.getElementById("bgVideo");
-
 pauseButton.style.display = "none";
 resumeButton.style.display = "none";
 progressBar.style.display = "none";
@@ -34,9 +30,6 @@ progressBar.style.display = "none";
 presetSelect.addEventListener("change", () => {
   selectedPreset = presetSelect.value;
   uploadSection.style.display = selectedPreset === "custom" ? "block" : "none";
-  
-  // 根据选择显示/隐藏视频
-  videoContainer.style.display = selectedPreset === "letitgo" ? "block" : "none";
 });
 
 startButton.addEventListener("click", async () => {
@@ -53,11 +46,6 @@ startButton.addEventListener("click", async () => {
   vibrationHistory = [];
   drawVibeTimeline();
 
-  // 重置视频位置
-  if (selectedPreset === "letitgo") {
-    bgVideo.currentTime = 0;
-  }
-  
   await loadAudioAndCSV();
   playAudio();
 });
@@ -69,11 +57,6 @@ pauseButton.addEventListener("click", () => {
     cancelAnimationFrame(animationFrame);
     pauseButton.disabled = true;
     resumeButton.disabled = false;
-    
-    // 暂停视频
-    if (selectedPreset === "letitgo") {
-      bgVideo.pause();
-    }
   }
 });
 
@@ -118,11 +101,6 @@ async function loadAudioAndCSV() {
 
   audioBuffer = await audioCtx.decodeAudioData(audioBuf);
   parseCSVText(csvText);
-
-  // 如果是 letitgo 预设，预加载视频
-  if (selectedPreset === "letitgo") {
-    bgVideo.load();
-  }
 }
 
 function parseCSVText(text) {
@@ -172,27 +150,12 @@ function playAudio(offset = 0) {
 
   const duration = audioBuffer.duration;
 
-  // 如果是 letitgo 预设，播放视频
-  if (selectedPreset === "letitgo") {
-    bgVideo.currentTime = offset;
-    bgVideo.play().catch(e => console.error("视频播放失败:", e));
-  }
-
   function vibrateLoop() {
     const elapsed = audioCtx.currentTime - startTime;
     const beat = vibrationSchedule.find(d => Math.abs(d.time - elapsed) < 0.01);
     if (beat && "vibrate" in navigator) {
       navigator.vibrate(beat.duration);
       logVibration(beat.duration);
-    } 
-
-    // 同步视频播放进度
-    if (selectedPreset === "letitgo" && bgVideo) {
-      const videoOffset = bgVideo.currentTime;
-      // 如果视频和音频不同步超过0.1秒，重新同步
-      if (Math.abs(videoOffset - elapsed) > 0.1) {
-        bgVideo.currentTime = elapsed;
-      }
     }
 
     const percent = Math.min(100, (elapsed / duration) * 100);
