@@ -17,6 +17,11 @@
     <input type="file" id="csvFile" accept=".csv" /><br /><br />
 
     <button id="startButton">播放</button>
+    <button id="pauseButton" disabled>暂停</button>
+    <button id="resumeButton" disabled>继续</button><br /><br />
+
+    <input type="range" id="progress" value="0" min="0" max="100" step="1" style="width: 80%;" /><br /><br />
+    <canvas id="waveform" width="600" height="100" style="background: #fff; border: 1px solid #ccc; border-radius: 8px;"></canvas>
   </div>
 
   <p style="margin-top:2em; font-size:0.9em; color:gray;">

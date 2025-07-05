@@ -15,14 +15,21 @@ h1 {
   text-shadow: 1px 1px 0px #fff;
 }
 
+label {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #f06292;
+}
+
 input[type="file"] {
-  margin-bottom: 1.5em;
+  margin-bottom: 1.2em;
   font-size: 1em;
   border: 2px dashed #ffa5ba;
   padding: 10px;
   background-color: #fff0f5;
   border-radius: 12px;
   color: #e91e63;
+  max-width: 80%;
 }
 
 input[type="file"]::file-selector-button {
@@ -35,9 +42,11 @@ input[type="file"]::file-selector-button {
   font-weight: bold;
 }
 
+/* 按钮样式统一 */
 button {
-  padding: 14px 28px;
-  font-size: 1.2em;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  margin: 0 6px;
   cursor: pointer;
   background-color: #ffb6c1;
   color: #fff;
@@ -47,20 +56,51 @@ button {
   transition: all 0.2s ease;
 }
 
-button:hover {
+button:hover:enabled {
   background-color: #ffa6c9;
   box-shadow: 0 2px #c66a8f;
   transform: translateY(2px);
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 进度条样式 */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 80%;
+  height: 8px;
+  border-radius: 8px;
+  background: #ffd1dc;
+  outline: none;
+  margin-top: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #f06292;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 波形画布 */
+canvas#waveform {
+  margin-top: 20px;
+  background: #fff;
+  border: 2px dashed #ffc0cb;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 提示文字 */
 p {
   font-size: 0.95em;
   color: #888;
   margin-top: 2em;
-}
-
-label {
-  font-weight: bold;
-  font-size: 1.1em;
-  color: #f06292;
 }
