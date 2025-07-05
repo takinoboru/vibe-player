@@ -9,13 +9,13 @@ body {
 h1 {
   font-size: 2.2em;
   margin-bottom: 1em;
-  color: #f06292;
+  color: #ff6800;
 }
 
 label {
   font-weight: bold;
   font-size: 1em;
-  color: #d81b60;
+  color: #ff6800;
 }
 
 input[type="file"] {
@@ -28,7 +28,7 @@ button {
   font-size: 1em;
   margin: 0 4px;
   cursor: pointer;
-  background-color: #ffb6c1;
+  background-color: #ffb582;
   color: #fff;
   border: none;
   border-radius: 20px;
@@ -36,7 +36,7 @@ button {
 }
 
 button:hover:enabled {
-  background-color: #ffa6c9;
+  background-color: #ffd2b3;
 }
 
 button:disabled {

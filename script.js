@@ -186,9 +186,9 @@ function drawVibeTimeline() {
   vibeCtx.clearRect(0, 0, width, height);
 
   vibrationHistory.forEach((dur, i) => {
-    let color = "#ffeb3b";
-    if (dur > 70) color = "#f44336";
-    else if (dur > 40) color = "#ff9800";
+    let color = "#ffd2b3";
+    if (dur > 70) color = "#ff6800";
+    else if (dur > 40) color = "#ffb582";
 
     const barHeight = (dur / 100) * height;
     vibeCtx.fillStyle = color;
