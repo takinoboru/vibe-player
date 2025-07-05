@@ -184,7 +184,7 @@ function playAudio(offset = 0) {
     if (beat && "vibrate" in navigator) {
       navigator.vibrate(beat.duration);
       logVibration(beat.duration);
-    }
+    } 
 
     // 同步视频播放进度
     if (selectedPreset === "letitgo" && bgVideo) {
