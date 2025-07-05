@@ -12,7 +12,7 @@ let useDefault = false;
 const audioInput = document.getElementById("audioFile");
 const csvInput = document.getElementById("csvFile");
 const loadDefaultButton = document.getElementById("loadDefaultButton");
-const startButton = document.getElementById("startButton");
+const startButton = document.getElementById('startButton');
 const pauseButton = document.getElementById("pauseButton");
 const resumeButton = document.getElementById("resumeButton");
 const progressBar = document.getElementById("progress");
@@ -32,22 +32,32 @@ loadDefaultButton.addEventListener("click", async () => {
   alert("默认文件 Let It Go 加载完成！");
 });
 
-startButton.addEventListener("click", async () => {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+startButton.addEventListener('click', function() {
+  // 先播放音频和振动
+  playAudio(0);
+
+  // 再显示并播放视频（静音）
+  boyVideo.style.display = 'block';
+  boyVideo.currentTime = 0;
+  boyVideo.muted = true;
+  boyVideo.play();
+
+  // 如果需要同步，定时校准视频进度
+  if (audioBuffer) {
+    const syncInterval = setInterval(() => {
+      if (boyVideo.paused || boyVideo.ended) {
+        clearInterval(syncInterval);
+        return;
+      }
+      // 让视频进度跟随音频
+      const audioCurrent = audioCtx.currentTime - startTime;
+      if (Math.abs(boyVideo.currentTime - audioCurrent) > 0.1) {
+        boyVideo.currentTime = audioCurrent;
+      }
+    }, 100);
+
+    boyVideo.onended = () => clearInterval(syncInterval);
   }
-
-  if (source) {
-    source.stop();
-    cancelAnimationFrame(animationFrame);
-  }
-
-  pauseOffset = 0;
-  vibrationHistory = [];
-  drawVibeTimeline();
-
-  await loadAudioAndCSV();
-  playAudio();
 });
 
 pauseButton.addEventListener("click", () => {
