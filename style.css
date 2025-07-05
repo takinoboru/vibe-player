@@ -75,3 +75,20 @@ input[type="range"]::-webkit-slider-thumb {
   background: #fffdf9;
   border-radius: 8px;
 }
+
+/* 新增视频容器样式 */
+#videoContainer {
+  display: none;
+  margin: 20px auto;
+  max-width: 300px;
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#bgVideo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
