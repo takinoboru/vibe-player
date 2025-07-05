@@ -67,15 +67,24 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* 进度条样式 */
+/* 默认隐藏控件 */
+#pauseButton,
+#resumeButton,
+#progress {
+  display: none;
+}
+
+/* 🎚 进度条居中 + 固定宽度 */
 input[type="range"] {
   -webkit-appearance: none;
-  width: 80%;
+  appearance: none;
+  display: block;
+  width: 300px;
   height: 8px;
+  margin: 10px auto;
   border-radius: 8px;
   background: #ffd1dc;
   outline: none;
-  margin-top: 10px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -89,16 +98,19 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
-/* 波形画布 */
+/* 📈 波形可视化画布 */
 canvas#waveform {
-  margin-top: 20px;
+  margin: 20px auto 0 auto;
+  display: block;
+  width: 600px;
+  height: 100px;
   background: #fff;
   border: 2px dashed #ffc0cb;
   border-radius: 12px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 }
 
-/* 提示文字 */
+/* 📢 底部提示文字 */
 p {
   font-size: 0.95em;
   color: #888;

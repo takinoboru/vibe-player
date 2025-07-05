@@ -18,6 +18,11 @@ const progressBar = document.getElementById("progress");
 const canvas = document.getElementById("waveform");
 const canvasCtx = canvas.getContext("2d");
 
+// 默认隐藏控制按钮和进度条
+pauseButton.style.display = "none";
+resumeButton.style.display = "none";
+progressBar.style.display = "none";
+
 startButton.addEventListener("click", async () => {
   if (!audioInput.files[0] || !csvInput.files[0]) {
     alert("请先上传音频文件和 CSV 文件！");
@@ -94,8 +99,7 @@ function playAudio(offset = 0) {
 
   analyser = audioCtx.createAnalyser();
   analyser.fftSize = 1024;
-  const bufferLength = analyser.fftSize;
-  dataArray = new Uint8Array(bufferLength);
+  dataArray = new Uint8Array(analyser.fftSize);
 
   source.connect(analyser);
   analyser.connect(audioCtx.destination);
@@ -104,13 +108,17 @@ function playAudio(offset = 0) {
   source.start(0, offset);
 
   const duration = audioBuffer.duration;
+
+  // 显示控制按钮与进度条
+  pauseButton.style.display = "inline-block";
+  resumeButton.style.display = "inline-block";
+  progressBar.style.display = "block";
   pauseButton.disabled = false;
   resumeButton.disabled = true;
 
   function vibrateLoop() {
     const elapsed = audioCtx.currentTime - startTime;
     const row = csvData.find(d => Math.abs(d.time - elapsed) < 0.01);
-
     if (row && row.energy > -18 && "vibrate" in navigator) {
       navigator.vibrate(20);
     }
@@ -132,7 +140,9 @@ function playAudio(offset = 0) {
 
 function drawWaveform() {
   analyser.getByteTimeDomainData(dataArray);
-  canvasCtx.fillStyle = "#fff";
+
+  // 透明背景填充，制造“残影”效果
+  canvasCtx.fillStyle = "rgba(255, 255, 255, 0.15)";
   canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
 
   canvasCtx.lineWidth = 2;
@@ -158,3 +168,4 @@ function drawWaveform() {
   canvasCtx.lineTo(canvas.width, canvas.height / 2);
   canvasCtx.stroke();
 }
+
