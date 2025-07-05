@@ -10,6 +10,11 @@
   <h1>听之有形</h1>
 
   <div>
+    <!-- 新增视频元素，初始隐藏 -->
+    <video id="boyVideo" width="270" height="480" style="display:none;" controls>
+      <source src="boy.mp4" type="video/mp4">
+      您的浏览器不支持 video 标签。
+    </video>
     <label for="audioFile">音频文件 (.wav)：</label><br />
     <input type="file" id="audioFile" accept="audio/wav" /><br /><br />
 
@@ -24,11 +29,7 @@
     <input type="range" id="progress" value="0" min="0" max="100" step="1" /><br /><br />
 
     <canvas id="vibeCanvas" width="600" height="80"></canvas>
-    <!-- 新增视频元素，初始隐藏 -->
-    <video id="boyVideo" width="360" height="638" style="display:none;" controls>
-      <source src="boy.mp4" type="video/mp4">
-      您的浏览器不支持 video 标签。
-    </video>
+    
   </div>
   <script src="script.js"></script>
 </body>
