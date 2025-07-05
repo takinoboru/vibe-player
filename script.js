@@ -1,5 +1,7 @@
 let audioBuffer = null;
 let csvData = [];
+let vibrationSchedule = [];
+
 let audioCtx = null;
 let source = null;
 let startTime = 0;
@@ -12,6 +14,10 @@ const startButton = document.getElementById("startButton");
 const pauseButton = document.getElementById("pauseButton");
 const resumeButton = document.getElementById("resumeButton");
 const progressBar = document.getElementById("progress");
+
+const vibeCanvas = document.getElementById("vibeCanvas");
+const vibeCtx = vibeCanvas.getContext("2d");
+let vibrationHistory = [];
 
 pauseButton.style.display = "none";
 resumeButton.style.display = "none";
@@ -78,13 +84,37 @@ async function loadAudio(file) {
 async function loadCSV(file) {
   const text = await file.text();
   const lines = text.trim().split("\n");
-  csvData = lines.slice(1).map(line => {
+
+  const raw = lines.slice(1).map(line => {
     const [frameIndex, frameTime, energy] = line.split(";");
     return {
       time: parseFloat(frameTime),
       energy: parseFloat(energy)
     };
   });
+
+  const MIN_ENERGY = -6.8;
+  const MIN_RISE = 0.15;
+
+  vibrationSchedule = raw
+    .map((d, i, arr) => {
+      if (i === 0) return null;
+      const delta = d.energy - arr[i - 1].energy;
+      if (d.energy > MIN_ENERGY && delta > MIN_RISE) {
+        return {
+          time: d.time,
+          duration: energyToVibrationDuration(d.energy)
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
+}
+
+function energyToVibrationDuration(energy) {
+  const mapped = Math.max(0, 7 + energy);
+  const logScale = Math.log10(1 + mapped);
+  return Math.round(20 + logScale * 100);
 }
 
 function playAudio(offset = 0) {
@@ -95,19 +125,21 @@ function playAudio(offset = 0) {
   startTime = audioCtx.currentTime - offset;
   source.start(0, offset);
 
-  const duration = audioBuffer.duration;
-
   pauseButton.style.display = "inline-block";
   resumeButton.style.display = "inline-block";
   progressBar.style.display = "block";
   pauseButton.disabled = false;
   resumeButton.disabled = true;
 
+  const duration = audioBuffer.duration;
+
   function vibrateLoop() {
     const elapsed = audioCtx.currentTime - startTime;
-    const row = csvData.find(d => Math.abs(d.time - elapsed) < 0.01);
-    if (row && row.energy > -18 && "vibrate" in navigator) {
-      navigator.vibrate(20);
+
+    const beat = vibrationSchedule.find(d => Math.abs(d.time - elapsed) < 0.01);
+    if (beat && "vibrate" in navigator) {
+      navigator.vibrate(beat.duration);
+      logVibration(beat.duration);
     }
 
     const percent = Math.min(100, (elapsed / duration) * 100);
@@ -122,4 +154,34 @@ function playAudio(offset = 0) {
   }
 
   vibrateLoop();
+}
+
+// ⬇️ 振动可视化逻辑
+function logVibration(duration) {
+  if (vibrationHistory.length >= 100) {
+    vibrationHistory.shift();
+  }
+  vibrationHistory.push(duration);
+  drawVibeTimeline();
+}
+
+function drawVibeTimeline() {
+  const width = vibeCanvas.width;
+  const height = vibeCanvas.height;
+  const barWidth = width / 100;
+
+  vibeCtx.clearRect(0, 0, width, height);
+
+  vibrationHistory.forEach((dur, i) => {
+    let color = "#ffeb3b";
+    if (dur > 70) {
+      color = "#f44336"; // 高
+    } else if (dur > 40) {
+      color = "#ff9800"; // 中
+    }
+
+    const barHeight = (dur / 100) * height;
+    vibeCtx.fillStyle = color;
+    vibeCtx.fillRect(i * barWidth, height - barHeight, barWidth - 1, barHeight);
+  });
 }

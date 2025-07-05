@@ -1,7 +1,5 @@
-/* style.css */
-
 body {
-  font-family: "Comic Sans MS", "Arial Rounded MT Bold", cursive, sans-serif;
+  font-family: "Segoe UI", sans-serif;
   text-align: center;
   padding: 40px;
   background: #fff8f0;
@@ -9,56 +7,36 @@ body {
 }
 
 h1 {
-  font-size: 2.5em;
+  font-size: 2.2em;
   margin-bottom: 1em;
-  color: #ff7096;
-  text-shadow: 1px 1px 0px #fff;
+  color: #f06292;
 }
 
 label {
   font-weight: bold;
-  font-size: 1.1em;
-  color: #f06292;
+  font-size: 1em;
+  color: #d81b60;
 }
 
 input[type="file"] {
-  margin-bottom: 1.2em;
+  margin-bottom: 1em;
   font-size: 1em;
-  border: 2px dashed #ffa5ba;
-  padding: 10px;
-  background-color: #fff0f5;
-  border-radius: 12px;
-  color: #e91e63;
-  max-width: 80%;
-}
-
-input[type="file"]::file-selector-button {
-  border: none;
-  background-color: #ffd1dc;
-  padding: 6px 12px;
-  border-radius: 10px;
-  color: #d81b60;
-  cursor: pointer;
-  font-weight: bold;
 }
 
 button {
-  padding: 12px 24px;
-  font-size: 1.1em;
-  margin: 0 6px;
+  padding: 10px 20px;
+  font-size: 1em;
+  margin: 0 4px;
   cursor: pointer;
   background-color: #ffb6c1;
   color: #fff;
   border: none;
   border-radius: 20px;
-  box-shadow: 0 4px #d47d9d;
   transition: all 0.2s ease;
 }
 
 button:hover:enabled {
   background-color: #ffa6c9;
-  box-shadow: 0 2px #c66a8f;
-  transform: translateY(2px);
 }
 
 button:disabled {
@@ -73,8 +51,6 @@ button:disabled {
 }
 
 input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
   display: block;
   width: 300px;
   height: 8px;
@@ -85,18 +61,17 @@ input[type="range"] {
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #f06292;
   cursor: pointer;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
-p {
-  font-size: 0.95em;
-  color: #888;
-  margin-top: 2em;
+#vibeCanvas {
+  display: block;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  background: #fffdf9;
+  border-radius: 8px;
 }

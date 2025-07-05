@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>音频播放器 - 振动同步实验工具</title>
+  <title>振动同步音频播放器</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>音频播放器</h1>
+  <h1>振动同步音频播放器</h1>
 
   <div>
     <label for="audioFile">音频文件 (.wav)：</label><br />
@@ -21,10 +21,12 @@
     <button id="resumeButton">继续</button><br /><br />
 
     <input type="range" id="progress" value="0" min="0" max="100" step="1" /><br /><br />
+
+    <canvas id="vibeCanvas" width="600" height="80"></canvas>
   </div>
 
   <p style="margin-top:2em; font-size:0.9em; color:gray;">
-    请使用 Android 浏览器打开本页面以启用震动功能。部分浏览器（如 iOS Safari）不支持 Vibration API。
+    请使用 Android 浏览器打开以启用震动功能。部分浏览器（如 iOS Safari）不支持 Vibration API。
   </p>
 
   <script src="script.js"></script>
