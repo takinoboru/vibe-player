@@ -42,7 +42,6 @@ input[type="file"]::file-selector-button {
   font-weight: bold;
 }
 
-/* 按钮样式统一 */
 button {
   padding: 12px 24px;
   font-size: 1.1em;
@@ -67,14 +66,12 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* 默认隐藏控件 */
 #pauseButton,
 #resumeButton,
 #progress {
   display: none;
 }
 
-/* 🎚 进度条居中 + 固定宽度 */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -98,19 +95,6 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
-/* 📈 波形可视化画布 */
-canvas#waveform {
-  margin: 20px auto 0 auto;
-  display: block;
-  width: 600px;
-  height: 100px;
-  background: #fff;
-  border: 2px dashed #ffc0cb;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-}
-
-/* 📢 底部提示文字 */
 p {
   font-size: 0.95em;
   color: #888;

@@ -2,8 +2,6 @@ let audioBuffer = null;
 let csvData = [];
 let audioCtx = null;
 let source = null;
-let analyser = null;
-let dataArray = null;
 
 let startTime = 0;
 let pauseOffset = 0;
@@ -15,10 +13,7 @@ const startButton = document.getElementById("startButton");
 const pauseButton = document.getElementById("pauseButton");
 const resumeButton = document.getElementById("resumeButton");
 const progressBar = document.getElementById("progress");
-const canvas = document.getElementById("waveform");
-const canvasCtx = canvas.getContext("2d");
 
-// 默认隐藏控制按钮和进度条
 pauseButton.style.display = "none";
 resumeButton.style.display = "none";
 progressBar.style.display = "none";
@@ -96,20 +91,13 @@ async function loadCSV(file) {
 function playAudio(offset = 0) {
   source = audioCtx.createBufferSource();
   source.buffer = audioBuffer;
-
-  analyser = audioCtx.createAnalyser();
-  analyser.fftSize = 1024;
-  dataArray = new Uint8Array(analyser.fftSize);
-
-  source.connect(analyser);
-  analyser.connect(audioCtx.destination);
+  source.connect(audioCtx.destination);
 
   startTime = audioCtx.currentTime - offset;
   source.start(0, offset);
 
   const duration = audioBuffer.duration;
 
-  // 显示控制按钮与进度条
   pauseButton.style.display = "inline-block";
   resumeButton.style.display = "inline-block";
   progressBar.style.display = "block";
@@ -126,7 +114,6 @@ function playAudio(offset = 0) {
     const percent = Math.min(100, (elapsed / duration) * 100);
     progressBar.value = percent.toFixed(1);
 
-    drawWaveform();
     if (elapsed < duration) {
       animationFrame = requestAnimationFrame(vibrateLoop);
     } else {
@@ -137,35 +124,3 @@ function playAudio(offset = 0) {
 
   vibrateLoop();
 }
-
-function drawWaveform() {
-  analyser.getByteTimeDomainData(dataArray);
-
-  // 透明背景填充，制造“残影”效果
-  canvasCtx.fillStyle = "rgba(255, 255, 255, 0.15)";
-  canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-
-  canvasCtx.lineWidth = 2;
-  canvasCtx.strokeStyle = "#f06292";
-  canvasCtx.beginPath();
-
-  const sliceWidth = canvas.width / dataArray.length;
-  let x = 0;
-
-  for (let i = 0; i < dataArray.length; i++) {
-    const v = dataArray[i] / 128.0;
-    const y = (v * canvas.height) / 2;
-
-    if (i === 0) {
-      canvasCtx.moveTo(x, y);
-    } else {
-      canvasCtx.lineTo(x, y);
-    }
-
-    x += sliceWidth;
-  }
-
-  canvasCtx.lineTo(canvas.width, canvas.height / 2);
-  canvasCtx.stroke();
-}
-
