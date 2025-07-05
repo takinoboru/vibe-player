@@ -1,5 +1,4 @@
 let audioBuffer = null;
-let csvData = [];
 let vibrationSchedule = [];
 
 let audioCtx = null;
@@ -8,8 +7,13 @@ let startTime = 0;
 let pauseOffset = 0;
 let animationFrame = null;
 
+let selectedPreset = "letitgo";
+
+const presetSelect = document.getElementById("presetSelect");
 const audioInput = document.getElementById("audioFile");
 const csvInput = document.getElementById("csvFile");
+const uploadSection = document.getElementById("uploadSection");
+
 const startButton = document.getElementById("startButton");
 const pauseButton = document.getElementById("pauseButton");
 const resumeButton = document.getElementById("resumeButton");
@@ -23,12 +27,12 @@ pauseButton.style.display = "none";
 resumeButton.style.display = "none";
 progressBar.style.display = "none";
 
-startButton.addEventListener("click", async () => {
-  if (!audioInput.files[0] || !csvInput.files[0]) {
-    alert("请先上传音频文件和 CSV 文件！");
-    return;
-  }
+presetSelect.addEventListener("change", () => {
+  selectedPreset = presetSelect.value;
+  uploadSection.style.display = selectedPreset === "custom" ? "block" : "none";
+});
 
+startButton.addEventListener("click", async () => {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
@@ -39,8 +43,10 @@ startButton.addEventListener("click", async () => {
   }
 
   pauseOffset = 0;
-  await loadAudio(audioInput.files[0]);
-  await loadCSV(csvInput.files[0]);
+  vibrationHistory = [];
+  drawVibeTimeline();
+
+  await loadAudioAndCSV();
   playAudio();
 });
 
@@ -76,21 +82,32 @@ progressBar.addEventListener("input", () => {
   }
 });
 
-async function loadAudio(file) {
-  const arrayBuffer = await file.arrayBuffer();
-  audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+async function loadAudioAndCSV() {
+  const fetchBinary = async (url) => await fetch(url).then(r => r.arrayBuffer());
+  const fetchText = async (url) => await fetch(url).then(r => r.text());
+
+  let audioBuf, csvText;
+
+  if (selectedPreset === "letitgo") {
+    audioBuf = await fetchBinary("let_it_go.wav");
+    csvText = await fetchText("let_it_go_1.csv");
+  } else if (selectedPreset === "demo2") {
+    audioBuf = await fetchBinary("another_demo.wav");
+    csvText = await fetchText("another_demo.csv");
+  } else {
+    audioBuf = await audioInput.files[0].arrayBuffer();
+    csvText = await csvInput.files[0].text();
+  }
+
+  audioBuffer = await audioCtx.decodeAudioData(audioBuf);
+  parseCSVText(csvText);
 }
 
-async function loadCSV(file) {
-  const text = await file.text();
-  const lines = text.trim().split("\n");
-
-  const raw = lines.slice(1).map(line => {
+function parseCSVText(text) {
+  const lines = text.trim().split("\n").slice(1);
+  const raw = lines.map(line => {
     const [frameIndex, frameTime, energy] = line.split(";");
-    return {
-      time: parseFloat(frameTime),
-      energy: parseFloat(energy)
-    };
+    return { time: parseFloat(frameTime), energy: parseFloat(energy) };
   });
 
   const MIN_ENERGY = -6.8;
@@ -135,7 +152,6 @@ function playAudio(offset = 0) {
 
   function vibrateLoop() {
     const elapsed = audioCtx.currentTime - startTime;
-
     const beat = vibrationSchedule.find(d => Math.abs(d.time - elapsed) < 0.01);
     if (beat && "vibrate" in navigator) {
       navigator.vibrate(beat.duration);
@@ -156,11 +172,8 @@ function playAudio(offset = 0) {
   vibrateLoop();
 }
 
-// ⬇️ 振动可视化逻辑
 function logVibration(duration) {
-  if (vibrationHistory.length >= 100) {
-    vibrationHistory.shift();
-  }
+  if (vibrationHistory.length >= 100) vibrationHistory.shift();
   vibrationHistory.push(duration);
   drawVibeTimeline();
 }
@@ -169,16 +182,12 @@ function drawVibeTimeline() {
   const width = vibeCanvas.width;
   const height = vibeCanvas.height;
   const barWidth = width / 100;
-
   vibeCtx.clearRect(0, 0, width, height);
 
   vibrationHistory.forEach((dur, i) => {
     let color = "#ffeb3b";
-    if (dur > 70) {
-      color = "#f44336"; // 高
-    } else if (dur > 40) {
-      color = "#ff9800"; // 中
-    }
+    if (dur > 70) color = "#f44336";
+    else if (dur > 40) color = "#ff9800";
 
     const barHeight = (dur / 100) * height;
     vibeCtx.fillStyle = color;

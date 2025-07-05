@@ -10,11 +10,19 @@
   <h1>振动同步音频播放器</h1>
 
   <div>
-    <label for="audioFile">音频文件 (.wav)：</label><br />
-    <input type="file" id="audioFile" accept="audio/wav" /><br /><br />
+    <label for="presetSelect">选择预设或自定义文件：</label><br />
+    <select id="presetSelect">
+      <option value="letitgo">🎵 Let It Go</option>
+      <option value="custom">🧾 自定义上传</option>
+    </select><br /><br />
 
-    <label for="csvFile">CSV 文件 (.csv)：</label><br />
-    <input type="file" id="csvFile" accept=".csv" /><br /><br />
+    <div id="uploadSection" style="display: none;">
+      <label for="audioFile">音频文件 (.wav)：</label><br />
+      <input type="file" id="audioFile" accept="audio/wav" /><br /><br />
+
+      <label for="csvFile">CSV 文件 (.csv)：</label><br />
+      <input type="file" id="csvFile" accept=".csv" /><br /><br />
+    </div>
 
     <button id="startButton">播放</button>
     <button id="pauseButton">暂停</button>
